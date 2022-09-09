@@ -9,4 +9,8 @@ export default defineConfig({
       "@/": "/src/",
     },
   },
+  build: {
+    target: ["chrome64", "edge79", "firefox62", "safari11"],
+    minify: false,
+  },
 });
