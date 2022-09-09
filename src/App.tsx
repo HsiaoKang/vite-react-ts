@@ -1,51 +1,41 @@
-import { useEffect, useState } from "react";
-import reactLogo from "@/assets/react.svg";
-import "./App.css";
+import { Link, Route, Routes } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0);
+// Auto generates routes from files under ./pages
+// https://vitejs.dev/guide/features.html#glob-import
+const pages = import.meta.glob("./pages/*.tsx", { eager: true });
 
-  useEffect(() => {
-    console.log(count);
-  }, []);
+const routes = Object.keys(pages).map((path) => {
+  const name = path.match(/\.\/pages\/(.*)\.tsx$/)?.[1];
+  if (!name) return {
+    path:''
+  };
+  return {
+    name,
+    path: name === "Home" ? "/" : `/${name.toLowerCase()}`,
+    // @ts-ignore
+    component: pages[path]?.default,
+  };
+});
 
-  const a = 1;
-  switch (a) {
-    case 1:
-      console.log(1);
-      break;
-    case 2:
-      console.log(2);
-  }
+export default function App() {
   return (
-    <div className="App">
-      <div>
-        <a
-          href="https://vitejs.dev"
-          target="_blank"
-          rel="noreferrer"
-          about="adf"
-        >
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <>
+      <nav>
+        <ul>
+          {routes.map(({ name, path }) => {
+            return (
+              <li key={path}>
+                <Link to={path}>{name}</Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      <Routes>
+        {routes.map(({ path, component: RouteComp }) => {
+          return <Route key={path} path={path} element={<RouteComp />}></Route>;
+        })}
+      </Routes>
+    </>
   );
 }
-
-export default App;
