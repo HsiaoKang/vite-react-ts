@@ -8,9 +8,32 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      globalThis = window;
-    </script>
+    <!--[if lt IE 10]>
+      <div
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          padding: 20px;
+          width: 100%;
+          background-color: yellowgreen;
+          color: #fff;
+          text-align: center;
+        "
+      >
+        此浏览器（IE）已不再被支持，清更换为更安全、易用的现代浏览器，
+        <a
+          href="https://browsehappy.com"
+          target="_blank"
+          style="
+            color: #fff;
+            border-bottom: 1px solid #fff;
+            text-decoration: none;
+          "
+          >在这里挑选一个</a
+        >
+      </div>
+    <![endif]-->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
